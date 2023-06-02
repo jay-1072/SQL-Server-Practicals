@@ -1,0 +1,101 @@
+CREATE TABLE tblDepartments (
+	DepartmentId INT PRIMARY KEY,
+	DepartmentName VARCHAR(200) NOT NULL
+)
+GO
+
+INSERT INTO tblDepartments (DepartmentId, DepartmentName) VALUES (1, 'IT');
+INSERT INTO tblDepartments (DepartmentId, DepartmentName) VALUES (2, 'HR');
+INSERT INTO tblDepartments (DepartmentId, DepartmentName) VALUES (3, 'Sales');
+GO
+
+SELECT * FROM tblDepartments
+GO
+
+CREATE TABLE tblEmployees (
+	EmployeeId INT IDENTITY(1, 1) PRIMARY KEY,
+	EmployeeName VARCHAR(50) NOT NULL,
+	Salary DECIMAL(10, 2) NOT NULL CHECK(Salary>0),
+	Experience DECIMAL(3, 1) CHECK(Experience>=0),
+	DepartmentId INT,
+	FOREIGN KEY(DepartmentId) REFERENCES tblDepartments(DepartmentId)
+)
+GO
+
+INSERT INTO tblEmployees(EmployeeName, Salary, Experience, DepartmentId) VALUES 
+						('Pranaya', 50000, 9, 1),
+						('Priyanka', 30000, 7.5, 2),
+						('Anurag', 40000, 5.5, 2),
+						('Preety', 35000, 6, 3),
+						('Sambit', 27000, 1, 1),
+						('Hina', 33000, 1.5, 2)
+GO
+
+SELECT * FROM tblEmployees
+GO
+
+-- 1. Write a Query display EmployeeId,EmployeeName and DepartmentName
+
+SELECT
+	e.EmployeeId, e.EmployeeName, d.DepartmentName
+FROM
+	tblEmployees e
+	INNER JOIN tblDepartments d ON e.DepartmentId = d.DepartmentId
+GO
+
+-- 2. Write a Query to display department wise employee count
+
+SELECT
+	d.DepartmentName, COUNT(EmployeeId) AS 'Employee Count'
+FROM
+	tblEmployees e
+	INNER JOIN tblDepartments d ON e.DepartmentId = d.DepartmentId
+GROUP BY
+	d.DepartmentName
+GO
+
+-- 3. Write a Query to display department wise maximum salary
+
+SELECT
+	d.DepartmentName, MAX(Salary) AS 'Maximum Salary'
+FROM
+	tblEmployees e
+	INNER JOIN tblDepartments d ON e.DepartmentId = d.DepartmentId
+GROUP BY
+	d.DepartmentName
+GO
+
+-- 4. Write a Query to display employee name in the ascending order of department name
+
+SELECT
+	e.EmployeeName, d.DepartmentName
+FROM
+	tblEmployees e
+	INNER JOIN tblDepartments d ON e.DepartmentId = d.DepartmentId
+ORDER BY
+	d.DepartmentName
+GO
+
+-- 5. 
+/*
+Write a Query to display employeeName and grade where grade criteria is as below
+if employee has more than 10 years of experience then grade is expert
+if employee has experience between 7 to 10 years then its grade is advanced
+if employee has experience between 5 to 7 years then its grade is intermediate
+if employee has experience between 2 to 5 year then its grade is beginner
+and for the rest of case display grade as novice
+*/
+
+SELECT 
+	EmployeeName,
+	Grade = CASE
+				WHEN Experience>10 THEN 'expert'
+				WHEN Experience BETWEEN 7 AND 10 THEN 'advanced'
+				WHEN Experience BETWEEN 5 AND 7 THEN 'intermediate'
+				WHEN Experience BETWEEN 2 AND 5 THEN 'beginner'
+				ELSE 'novice'
+			END
+FROM
+	tblEmployees
+
+
