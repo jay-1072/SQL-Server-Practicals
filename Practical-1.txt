@@ -1,0 +1,71 @@
+CREATE TABLE tblProducts (
+	ProductId INT IDENTITY(1, 1) PRIMARY KEY,
+	ProductName VARCHAR(500) NOT NULL,
+	Category VARCHAR(255) NOT NULL,
+	Price DEC(10, 2) NOT NULL CHECK(Price>0)
+);
+GO
+
+ALTER TABLE tblProducts ADD Description VARCHAR(500);
+GO
+
+INSERT INTO tblProducts (ProductName, Category, Price, Description) VALUES ('Sun Bicycles Spider 3i - 2017', 'Mountain Bike', 832.99, 'This is a mountain bike');
+INSERT INTO tblProducts (ProductName, Category, Price, Description) VALUES ('Haro Flightline One ST - 2017', 'Mountain Bike', 379.99, 'This is a haro flightline mountain bike');
+INSERT INTO tblProducts (ProductName, Category, Price, Description) VALUES ('Vaseline', 'Health', 500, 'This is a vaseline');
+INSERT INTO tblProducts (ProductName, Category, Price, Description) VALUES ('Neem Face Wash', 'Health', 1500, 'This is neem face wash');
+INSERT INTO tblProducts (ProductName, Category, Price, Description) VALUES ('Paracetamol', 'Health', 1200, 'This is a medicine to get relief from fever');
+INSERT INTO tblProducts (ProductName, Category, Price, Description) VALUES ('Trek Powerfly 5 Women''s - 2018', 'Electric Bikes', 3499.99, 'Trek Powerfly electric bike for women');
+INSERT INTO tblProducts (ProductName, Category, Price, Description) VALUES ('real me narzo N53', 'Electronics',  8999, NULL)
+INSERT INTO tblProducts (ProductName, Category, Price, Description) VALUES ('Samsung Galaxy M13', 'Electronics', 10999, 'This is a samsung galaxy phone');
+INSERT INTO tblProducts (ProductName, Category, Price, Description) VALUES ('Lenovo IdeaCentre Gaming 5 Desktop', 'Electronics', 56490, 'lenovo gaming desktop');
+INSERT INTO tblProducts (ProductName, Category, Price, Description) VALUES ('Electra Townie 7D (20-inch) - Boys'' - 2017', 'Children Bicycles', 339.99, 'This is a Electra Townie the children bicycle');
+GO
+
+SELECT * FROM tblProducts
+GO
+
+--TRUNCATE TABLE tblProducts
+
+--DROP TABLE IF EXISTS product
+
+-- 1. Write a Query to List all the products belonging to health category
+
+SELECT 
+	* 
+FROM 
+	tblProducts 
+WHERE 
+	Category = 'Health';
+GO
+
+-- 2. Write a Query to get total price of all products
+
+SELECT 
+	SUM(Price) AS 'Total Price' 
+FROM 
+	tblProducts;
+GO
+
+-- 3. Write a query to display product in descending order of price
+
+SELECT 
+	* 
+FROM 
+	tblProducts 
+ORDER BY 
+	Price DESC;
+GO
+
+-- 4. Write a Query to display category wise product count having price greater than  10000
+
+SELECT 
+	Category, COUNT(ProductId) AS 'ProductCount' 
+FROM 
+	tblProducts 
+WHERE 
+	Price>10000 
+GROUP BY 
+	Category;
+GO
+
+
